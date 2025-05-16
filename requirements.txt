@@ -1,0 +1,8 @@
+opencv-python
+mtcnn
+pytorch
+insightface
+mediapipe
+numpy
+matplotlib
+pandas
