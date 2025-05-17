@@ -25,8 +25,15 @@ def summarize_results(stats, name, show_heatmap=True):
             'Samples': total
         })
 
+    pd.set_option('display.max_rows', None)  # Show all rows
     df = pd.DataFrame(records)
-    # df = df.reset_index(drop=True)
+    df = df.reset_index(drop=True)
+    df_sorted = df.sort_values(['Gender', 'Race', 'AgeGroup'])
+    results_dir = "./results"
+    os.makedirs(results_dir, exist_ok=True)
+    filename = f"{results_dir}/{name}_detection_accuracy_summary.csv"
+
+    df_sorted.to_csv(filename, index=False)
     print("\n Detection Accuracy Summary:\n")
     print(df.sort_values(['Gender', 'Race', 'AgeGroup']))
 
@@ -42,3 +49,4 @@ def summarize_results(stats, name, show_heatmap=True):
             plt.xlabel('Age Group')
             plt.ylabel('Race')
             plt.show()
+
