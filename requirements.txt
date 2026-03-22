@@ -6,3 +6,5 @@ mediapipe
 numpy
 matplotlib
 pandas
+dlib
+face_recognition

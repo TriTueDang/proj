@@ -17,10 +17,14 @@ V této složce jsou však zahrnuty pouze 1000 obrázků pro rychlé testování
 
 ### Detektory obličejů
 
-1. Haar Cascade (OpenCV)
-2. MTCNN (mtcnn)
-3. BLAZEFACE (mediapipe)
-4. SCRFD (insightface)
+V tomto projektu se využívá celkem 6 různých detektorů obličejů:
+
+1.  **Haar Cascade (OpenCV)**: Klasický algoritmus využívající Cascade Classifier z knihovny OpenCV. Je velmi rychlý, ale citlivý na osvětlení a natočení obličeje.
+2.  **MTCNN (Multi-task Cascaded Convolutional Networks)**: Hluboká neuronová síť schopná detekovat nejen obličeje, ale i obličejové body (oči, nos, ústa). Velmi přesný a robustní detektor.
+3.  **BlazeFace (MediaPipe)**: Detektor od Googlu optimalizovaný pro mobilní zařízení a real-time aplikace. Vyniká extrémní rychlostí.
+4.  **SCRFD (Sample and Computation Redistribution)**: Moderní a vysoce efektivní detektor z balíčku `insightface`, který dosahuje špičkových výsledků v rychlosti i přesnosti.
+5.  **Dlib HOG**: Detektor založený na algoritmu Histogram of Oriented Gradients (HOG) a Linear SVM. Je velmi spolehlivý pro čelní pohledy na obličej.
+6.  **Face Recognition (face_recognition)**: Jednoduchý wrapper nad knihovnou `dlib`, který usnadňuje detekci i rozpoznávání obličejů. Pro detekci standardně využívá HOG model, ale je možné ho přepnout i na přesnější CNN model.
 
 ### Spuštění
 
