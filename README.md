@@ -1,6 +1,6 @@
 # Face Detection Evaluation
 
-Tento projekt obsahuje 4 různé detektory obličejů a nástroje pro jejich vyhodnocení na datasetu UTKFace.
+Tento projekt obsahuje 5 různých detektorů obličejů a nástroje pro jejich vyhodnocení na datasetu UTKFace.
 
 ## Dataset UTKFace
 
@@ -10,10 +10,12 @@ V této složce jsou však zahrnuty pouze 1000 obrázků pro rychlé testování
 
 ### Struktura projektu
 
-* **images/** – Obsahuje podmnožinu datasetu (1000 obrázků)
-* **detectors/** – Implementace čtyř různých detektorů obličejů
-* **evaluation/** – Skripty pro vyhodnocení přesnosti detektorů podle věku, pohlaví a rasy
-
+* **main.ipynb** – Jupyter notebook, použití detektorů na celý dataset. Zobrazení heat-map a evaluation tabulek.
+* **images/** – Obsahuje podmnožinu datasetu (1000 obrázků), celý dataset má více než 20 000 obrázků
+* **detectors/** – Implementace pěti různých detektorů obličeje
+* **evaluation/** - Skript pro vyhodnocení přesnosti detektorů.
+* **utils/** – Pomocné skripty pro načtení obrazků, uložení výsledků složky **results/**, vykreslení heat-map, ověření detektoru
+* **results/** - Výsledky vyhodnocení. Soubory formátu .csv.
 
 ### Detektory obličejů
 
@@ -24,6 +26,8 @@ V tomto projektu se využívá celkem 5 různých detektorů obličejů:
 3.  **BlazeFace (MediaPipe)**: Detektor od Googlu optimalizovaný pro mobilní zařízení a real-time aplikace. Vyniká extrémní rychlostí. CNN.
 4.  **SCRFD (Sample and Computation Redistribution)**: Moderní a vysoce efektivní detektor z balíčku `insightface`. CNN.
 5.  **Dlib HOG**: Detektor založený na algoritmu Histogram of Oriented Gradients (HOG) a Linear SVM. Je spolehlivý pro čelní pohledy na obličej.
+
+
     **Face Recognition (face_recognition)**: Jednoduchý wrapper nad knihovnou `dlib`, který usnadňuje detekci i rozpoznávání obličejů. Pro detekci standardně využívá HOG model, ale je možné ho přepnout i na přesnější CNN model.
 
 ### Spuštění
