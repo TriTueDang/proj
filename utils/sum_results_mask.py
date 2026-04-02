@@ -74,7 +74,7 @@ def summarize_mask_results(stats, name, show_plot=True):
 
     print(f"\n Detection Accuracy Summary for {name}:\n")
     print(df.to_string(index=False))
-    print(f"--> Uloženo do: {out_csv}")
+
 
     if show_plot:
         if category_records:
@@ -89,12 +89,16 @@ def summarize_mask_results(stats, name, show_plot=True):
                     'Recall (%)': record['Recall (%)'],
                     'Accuracy (%)': record['Accuracy (%)']
                 }
-                sns.barplot(x=list(metrics.keys()), y=list(metrics.values()), palette=['#1f77b4', '#ff7f0e', '#2ca02c'], ax=ax)
+                colors = ['#1f77b4', '#ff7f0e', '#2ca02c']
+                bars = ax.bar(range(len(metrics)), list(metrics.values()), color=colors)
+                ax.set_xticks(range(len(metrics)))
+                ax.set_xticklabels(list(metrics.keys()))
                 ax.set_title(f"{name} - {record['MaskStatus']}")
                 ax.set_ylim(0, 100)
                 ax.set_ylabel('Percent (%)' if ax is axes[0] else '')
-                for i, v in enumerate(metrics.values()):
-                    ax.text(i, v + 2, f"{v:.1f}%", color='black', ha='center', va='bottom', fontweight='bold')
+                for bar in bars:
+                    height = bar.get_height()
+                    ax.text(bar.get_x() + bar.get_width() / 2, height + 2, f"{height:.1f}%", color='black', ha='center', va='bottom', fontweight='bold')
 
             plt.tight_layout()
             plt.show()
@@ -135,15 +139,19 @@ def summarize_mask_results(stats, name, show_plot=True):
             metrics = {'Precision (%)': precision * 100, 'Recall (%)': recall * 100, 'Accuracy (%)': accuracy * 100}
             plt.figure(figsize=(6, 4))
 
-            # Use a color palette for distinct bar colors
-            ax = sns.barplot(x=list(metrics.keys()), y=list(metrics.values()), palette=['#1f77b4', '#ff7f0e', '#2ca02c'])
+            colors = ['#1f77b4', '#ff7f0e', '#2ca02c']
+            ax = plt.gca()
+            bars = ax.bar(range(len(metrics)), list(metrics.values()), color=colors)
+            ax.set_xticks(range(len(metrics)))
+            ax.set_xticklabels(list(metrics.keys()))
             plt.title(f'{name} Detection Performance on Face-Mask')
             plt.ylabel('Percent (%)')
             plt.ylim(0, 100)
 
             # Add labels above each bar
-            for i, v in enumerate(metrics.values()):
-                ax.text(i, v + 2, f"{v:.1f}%", color='black', ha='center', va='bottom', fontweight='bold')
+            for bar in bars:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width() / 2, height + 2, f"{height:.1f}%", color='black', ha='center', va='bottom', fontweight='bold')
 
             plt.tight_layout()
             plt.show()
