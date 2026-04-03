@@ -10,12 +10,13 @@ V této složce jsou však zahrnuty pouze 1000 obrázků pro rychlé testování
 
 ### Struktura projektu
 
-* **main.ipynb** – Jupyter notebook, použití detektorů na celý dataset. Zobrazení heat-map a evaluation tabulek.
-* **images/** – Obsahuje podmnožinu datasetu (1000 obrázků), celý dataset má více než 20 000 obrázků
-* **detectors/** – Implementace pěti různých detektorů obličeje
-* **evaluation/** - Skript pro vyhodnocení přesnosti detektorů.
-* **utils/** – Pomocné skripty pro načtení obrazků, uložení výsledků složky **results/**, vykreslení heat-map, ověření detektoru
-* **results/** - Výsledky vyhodnocení. Soubory formátu .csv.
+* **main.ipynb** – Jupyter notebook, použití detektorů na celý dataset UTKFace. Zobrazení heat-map a evaluation tabulek.
+* **main_face_mask.ipynb** – Jupyter notebook pro vyhodnocení detekce roušek na Face Mask Detection datasetu.
+* **images/** – Obsahuje podmnožinu datasetu UTKFace (1000 obrázků).
+* **detectors/** – Implementace pěti různých detektorů obličeje.
+* **evaluation/** - Logika pro vyhodnocení přesnosti detektorů (IoU, výpočet metrik).
+* **utils/** – Pomocné skripty (loaders pro UTKFace a Face Mask dataset, ukládání výsledků, vizualizace).
+* **results/** - Výsledky vyhodnocení ve formátu .csv.
 
 ### Detektory obličejů
 
@@ -30,6 +31,27 @@ V tomto projektu se využívá celkem 5 různých detektorů obličejů:
 
     **Face Recognition (face_recognition)**: Jednoduchý wrapper nad knihovnou `dlib`, který usnadňuje detekci i rozpoznávání obličejů. Pro detekci standardně využívá HOG model, ale je možné ho přepnout i na přesnější CNN model.
 
+## Detekce roušek (Face Mask Detection)
+
+Projekt byl rozšířen o možnost detekce a vyhodnocení nošení roušek.
+
+### Dataset Face Mask Detection
+Dataset obsahuje obrázky s anotacemi ve formátu PASCAL VOC XML. Každý obličej je zařazen do jedné ze tří kategorií:
+- `with_mask` (s rouškou)
+- `without_mask` (bez roušky)
+- `mask_weared_incorrect` (nesprávně nasazená rouška)
+
+Celý dataset je dostupný na: [Face Mask Detection - Kaggle](https://www.kaggle.com/datasets/andrewmvd/face-mask-detection)
+
+### Evaluace a metriky
+Pro vyhodnocení kvality detekce a klasifikace roušek používám IoU (Intersection over Union) s prahem 0.5 a následující statistické metriky:
+
+- **Accuracy (Přesnost)**: Procentuální podíl správně detekovaných a klasifikovaných tváří (TP) vůči všem detekcím (TP + FP + FN).
+- **Precision (Preciznost)**: Vyjadřuje, kolik z detekovaných tváří skutečně patří do dané kategorie. `TP / (TP + FP)`
+- **Recall (Senzitivita)**: Vyjadřuje, jakou část z celkového počtu tváří v datasetu dokázal detektor najít. `TP / (TP + FN)`
+
+Výsledky jsou generovány samostatně pro každou kategorii i souhrnně pro celý detektor.
+
 ### Spuštění
 
 Před spuštěním je třeba nainstalovat potřebné knihovny:
@@ -40,9 +62,10 @@ pip install -r requirements.txt
 
 Spuštění detektorů a evaluace:
 
+*   **UTKFace**: Použijte Jupyter notebook `main.ipynb`.
+*   **Face Mask Detection**: Použijte Jupyter notebook `main_face_mask.ipynb`.
 
-Jupyter notebook: main.ipynb
-Při spuštění detektoru obličeje se vytvoří složka results, kam se uloží celý dataframe ve formátu csv.
+Při spuštění detektorů se ve složce `results/` vytvoří souhrnné CSV reporty a statistiky.
 
 
 ### Příspěvky
