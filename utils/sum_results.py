@@ -11,37 +11,45 @@ RACE_LABELS = {
     4: 'Other'
 }
 def summarize_results(stats, name, show_heatmap=True):
-    records = []
+    AGE_GROUPS_ORDER = ["0-2", "3-5", "6-12", "13-18", "19-25", "26-35", "36-50", "51-70", "71-90", "90+"]
+    age_sort_map = {name: i for i, name in enumerate(AGE_GROUPS_ORDER)}
 
-    for (gender, race, age_decade), matches in stats.items():
+    records = []
+    for (gender, race, age_group), matches in stats.items():
         total = len(matches)
         correct = sum(matches)
         accuracy = correct / total if total > 0 else 0
         records.append({
             'Gender': 'Male' if gender == 0 else 'Female',
             'Race': RACE_LABELS.get(race, 'Unknown'),
-            'AgeGroup': f"{age_decade*10}s",  # např. "20s", "30s"
+            'AgeGroup': age_group,
             'Accuracy (%)': round(accuracy * 100, 2),
             'Samples': total
         })
 
     pd.set_option('display.max_rows', None)  # Show all rows
     df = pd.DataFrame(records)
-    df = df.reset_index(drop=True)
-    df_sorted = df.sort_values(['Gender', 'Race', 'AgeGroup'])
+    df['AgeSort'] = df['AgeGroup'].map(age_sort_map)
+    df_sorted = df.sort_values(['Gender', 'Race', 'AgeSort']).reset_index(drop=True)
+    df_sorted = df_sorted.drop(columns=['AgeSort'])
+
     results_dir = "./results"
     os.makedirs(results_dir, exist_ok=True)
     filename = f"{results_dir}/{name}_detection_accuracy_summary.csv"
 
     df_sorted.to_csv(filename, index=False)
     print("\n Detection Accuracy Summary:\n")
-    print(df.sort_values(['Gender', 'Race', 'AgeGroup']))
+    print(df_sorted)
 
     if show_heatmap:
         # Jedna heatmapa pro každé pohlaví
-        for gender in df['Gender'].unique():
-            subset = df[df['Gender'] == gender]
+        for gender in df_sorted['Gender'].unique():
+            subset = df_sorted[df_sorted['Gender'] == gender]
             pivot = subset.pivot_table(index='Race', columns='AgeGroup', values='Accuracy (%)', aggfunc='mean')
+
+            # Reorder columns according to AGE_GROUPS_ORDER
+            existing_cols = [c for c in AGE_GROUPS_ORDER if c in pivot.columns]
+            pivot = pivot[existing_cols]
 
             plt.figure(figsize=(10, 6))
             sns.heatmap(pivot, annot=True, cmap='YlGnBu', fmt='.1f')
