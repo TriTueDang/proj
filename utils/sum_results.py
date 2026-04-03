@@ -11,6 +11,16 @@ RACE_LABELS = {
     4: 'Other'
 }
 def summarize_results(stats, name, show_heatmap=True):
+    """
+    Summarizes detection accuracy results from face detection evaluation.
+
+    This function processes the statistics dictionary containing detection results
+    grouped by gender, race, and age group. It calculates accuracy percentages,
+    creates a summary DataFrame, saves it to a CSV file, prints the summary table,
+    and optionally displays heatmaps for each gender showing accuracy across
+    race and age groups.
+    """
+
     AGE_GROUPS_ORDER = ["0-2", "3-5", "6-12", "13-18", "19-25", "26-35", "36-50", "51-70", "71-90", "90+"]
     age_sort_map = {name: i for i, name in enumerate(AGE_GROUPS_ORDER)}
 
@@ -42,7 +52,7 @@ def summarize_results(stats, name, show_heatmap=True):
     print(df_sorted)
 
     if show_heatmap:
-        # Jedna heatmapa pro každé pohlaví
+        # One heatmap for each gender
         for gender in df_sorted['Gender'].unique():
             subset = df_sorted[df_sorted['Gender'] == gender]
             pivot = subset.pivot_table(index='Race', columns='AgeGroup', values='Accuracy (%)', aggfunc='mean')

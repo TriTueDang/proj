@@ -8,3 +8,7 @@ pandas
 dlib
 face_recognition
 tensorflow
+kagglehub
+ipykernel
+seaborn
+
