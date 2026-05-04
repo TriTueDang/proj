@@ -4,8 +4,8 @@ class SCRFDDetector:
     def __init__(self):
         # Initialize the SCRFD face detector
         self.app = FaceAnalysis(name='buffalo_l')
-        self.app.prepare(ctx_id=0, det_size=(160, 160))
-        self.confidence_threshold = 0.5
+        self.app.prepare(ctx_id=0, det_size=(640, 640))
+        self.confidence_threshold = 0.3
 
     def detect(self, image):
         faces = self.app.get(image)
