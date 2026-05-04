@@ -6,5 +6,5 @@ class HaarCascadeDetector:
 
     def detect(self, image):
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        boxes = self.detector.detectMultiScale(gray, scaleFactor=1.08, minNeighbors=5, minSize=(30, 30), maxSize=(300, 300))
+        boxes = self.detector.detectMultiScale(gray, scaleFactor=1.05, minNeighbors=3, minSize=(30, 30), maxSize=(300, 300))
         return boxes

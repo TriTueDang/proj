@@ -5,7 +5,7 @@ class BlazeFaceDetector:
     def __init__(self, model_sel=0):
         self.face_detection = mp.solutions.face_detection.FaceDetection(
             model_selection = model_sel,
-            min_detection_confidence=0.5
+            min_detection_confidence=0.3
         )
 
     def detect(self, image):
@@ -16,7 +16,7 @@ class BlazeFaceDetector:
         if results.detections:
             h_img, w_img, _ = image.shape
             for detection in results.detections:
-                if detection.score[0] >= 0.5:  # Confidence threshold
+                if detection.score[0] >= 0.3:  # Confidence threshold
                     # Extract bounding box
                     bboxC = detection.location_data.relative_bounding_box
 
