@@ -51,29 +51,15 @@ def summarize_mask_results(stats, name, show_plot=True):
     recall = TP / (TP + FN) if (TP + FN) > 0 else 0
     accuracy = TP / (TP + FP + FN) if (TP + FP + FN) > 0 else 0
 
-    records = [{
-        'Detector': name,
-        'TP': TP,
-        'FP': FP,
-        'FN': FN,
-        'Precision (%)': round(precision * 100, 2),
-        'Recall (%)': round(recall * 100, 2),
-        'Accuracy (%)': round(accuracy * 100, 2)
-    }]
-
-    # Create a DataFrame
-    df = pd.DataFrame(records)
-
     # Save results to CSV
     results_dir = os.path.join(os.path.dirname(__file__), "..", "results")
     if not os.path.exists(results_dir):
         os.makedirs(results_dir)
 
-    out_csv = os.path.join(results_dir, f"{name}_face_mask_summary.csv")
-    df.to_csv(out_csv, index=False)
+    if category_records:
+        out_csv = os.path.join(results_dir, f"{name}_mask_status_summary.csv")
+        pd.DataFrame(category_records).to_csv(out_csv, index=False)
 
-    print(f"\n Detection Accuracy Summary for {name}:\n")
-    print(df.to_string(index=False))
 
 
     if show_plot:
