@@ -11,4 +11,4 @@ tensorflow
 kagglehub
 ipykernel
 seaborn
-
+supervision

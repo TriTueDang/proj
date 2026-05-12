@@ -8,19 +8,21 @@ class FaceRecognitionDetector:
         self.model = model
 
     def detect(self, image):
+        detections = self.detect_with_scores(image)
+        return [det['box'] for det in detections]
+
+    def detect_with_scores(self, image):
         # face_recognition expects RGB images, while OpenCV uses BGR
         rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         
         # Detect face locations (top, right, bottom, left)
         face_locations = face_recognition.face_locations(rgb_image, model=self.model)
         
-        boxes = []
+        detections = []
         for (top, right, bottom, left) in face_locations:
-            # Convert (top, right, bottom, left) to [x, y, w, h]
             x = left
             y = top
             w = right - left
             h = bottom - top
-            boxes.append((x, y, w, h))
-            
-        return boxes
+            detections.append({'box': (x, y, w, h), 'score': 1.0})
+        return detections
