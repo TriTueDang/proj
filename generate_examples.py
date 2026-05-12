@@ -11,28 +11,28 @@ output_dir = r"c:\Users\programming\PROJ\tul-thesis-typst\tul-thesis\images_resu
 os.makedirs(output_dir, exist_ok=True)
 
 # # 1. UTKFace Examples
-# utk_path = r"c:\Users\programming\proj25\proj\images\UTKFace"
-# utk_samples = [
-#     "59_1_0_20170110160643688.jpg.chip.jpg",
-#     "10_0_0_20161220222308131.jpg.chip.jpg"
-# ]
+utk_path = r"c:\Users\programming\proj25\proj\images\UTKFace"
+utk_samples = [
+    "59_1_0_20170110160643688.jpg.chip.jpg",
+    "10_0_0_20161220222308131.jpg.chip.jpg"
+]
 
 detector_scrfd = SCRFDDetector()
 
-# for i, filename in enumerate(utk_samples):
-#     img_path = os.path.join(utk_path, filename)
-#     image = cv2.imread(img_path)
-#     if image is None: continue
+for i, filename in enumerate(utk_samples):
+    img_path = os.path.join(utk_path, filename)
+    image = cv2.imread(img_path)
+    if image is None: continue
 
-#     # Detection
-#     bboxes = detector_scrfd.detect(image)
+    # Detection
+    bboxes = detector_scrfd.detect(image)
 
-#     # Draw
-#     for (x, y, w, h) in bboxes:
-#         cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    # Draw
+    for (x, y, w, h) in bboxes:
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-#     cv2.imwrite(os.path.join(output_dir, f"utk_example_{i}.jpg"), image)
-#     print(f"Saved UTK example {i}: {filename}")
+    cv2.imwrite(os.path.join(output_dir, f"utk_example_{i}.jpg"), image)
+    print(f"Saved UTK example {i}: {filename}")
 
 # 2. Face Mask Examples
 mask_dataset_path = kagglehub.dataset_download("andrewmvd/face-mask-detection")

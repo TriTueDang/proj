@@ -9,15 +9,19 @@ class BlazeFaceDetector:
         )
 
     def detect(self, image):
+        detections = self.detect_with_scores(image)
+        return [det['box'] for det in detections]
+
+    def detect_with_scores(self, image):
         # Convert to RGB as required by mediapipe
         rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         results = self.face_detection.process(rgb_image)
-        boxes = []
+        detections = []
         if results.detections:
             h_img, w_img, _ = image.shape
             for detection in results.detections:
-                if detection.score[0] >= 0.3:  # Confidence threshold
-                    # Extract bounding box
+                score = float(detection.score[0])
+                if score >= 0.3:  # Confidence threshold
                     bboxC = detection.location_data.relative_bounding_box
 
                     x1 = int(bboxC.xmin * w_img)
@@ -34,7 +38,7 @@ class BlazeFaceDetector:
                     h = y2 - y1
 
                     if w > 0 and h > 0:
-                        boxes.append((x1, y1, w, h))
-        return boxes
+                        detections.append({'box': (x1, y1, w, h), 'score': score})
+        return detections
 
 
